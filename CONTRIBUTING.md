@@ -112,7 +112,7 @@ refactor(checkout): extrai lógica de validação de estoque para serviço dedic
 
 ### Pré-requisitos
 
-- Java 25+
+- Java 21+
 - Maven Wrapper (`./mvnw`) — já incluso no repositório
 - Docker e Docker Compose (para o banco de dados)
 
