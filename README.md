@@ -68,54 +68,6 @@ O arquivo `.github/workflows/ci.yml` dispara automaticamente em push e pull requ
 
 ---
 
-## Configuração de Branch Protection
-
-Para garantir que o proprietário (`wellbenicio`) consiga **aprovar e mergear** os pull requests abertos pelo agente Copilot, siga os passos abaixo.
-
-### Configurar a regra de proteção da branch `main`
-
-1. Acesse **Settings → Branches** no repositório
-2. Clique em **Edit** na regra existente para `main` (ou **Add rule** se não houver)
-3. Aplique as seguintes configurações:
-
-#### ✅ Configurações recomendadas
-
-| Configuração | Valor |
-|---|---|
-| Require a pull request before merging | ✅ Habilitado |
-| Required approvals | `1` |
-| Dismiss stale reviews | ✅ Recomendado |
-| Require status checks to pass before merging | ✅ Habilitado |
-| Status check obrigatório | `Build & Test` (nome do job no CI) |
-| Require branches to be up to date before merging | ✅ Recomendado |
-| Do not allow bypassing the above settings | ❌ **Desabilitado** — permite que admins/owners façam merge mesmo que alguns checks falhem em casos emergenciais |
-
-#### ⚠️ Configurações que bloqueiam o owner — verifique se estão desabilitadas
-
-| Configuração | Deve estar |
-|---|---|
-| Restrict who can push to matching branches | ❌ Desabilitado (ou contendo `wellbenicio`) |
-| Require review from Code Owners | ❌ Desabilitado (não há `CODEOWNERS` neste repositório) |
-| Restrict who can dismiss pull request reviews | ❌ Desabilitado |
-
-> **Atenção:** No GitHub, o autor de um PR **não pode aprovar o próprio PR**. Como os PRs são abertos pelo agente **Copilot**, o proprietário `wellbenicio` pode (e deve) aprovar normalmente — desde que o CI esteja verde.
-
-### Por que os PRs ficam bloqueados?
-
-Os PRs aparecem como **bloqueados** principalmente porque:
-
-1. **CI falha** — O job `Build & Test` retorna erro (ex.: testes não passam). Após o merge deste PR, o CI deve passar e desbloquear os PRs #3 e #4.
-2. **Review pendente** — O branch protection exige pelo menos 1 aprovação. Basta `wellbenicio` aprovar o PR no GitHub.
-3. **Branch desatualizada** — Se `main` recebeu commits desde que o PR foi aberto, é necessário fazer `Update branch` antes do merge.
-
-### Fluxo de aprovação
-
-```
-Copilot abre PR → CI roda → CI passa (verde) → wellbenicio aprova → wellbenicio faz merge
-```
-
----
-
 ## Variáveis de ambiente
 
 Copie o arquivo de exemplo e ajuste conforme seu ambiente local:
