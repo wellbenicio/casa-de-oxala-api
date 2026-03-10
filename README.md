@@ -5,7 +5,7 @@
 
 API REST para a Casa de Oxalá — loja de artigos religiosos (umbanda, candomblé, jurema e afins).
 
-**Stack:** Java 21 · Spring Boot 3 · PostgreSQL · Maven · Azure Container Apps
+**Stack:** Java 21 · Spring Boot 4 · PostgreSQL · Maven · Azure Container Apps
 
 ---
 
