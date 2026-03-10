@@ -4,6 +4,26 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Sensitive / local config files — never commit these ###
+.env
+.env.*
+*.env
+application-prod.yml
+application-prod.yaml
+application-prod.properties
+application-local.yml
+application-local.yaml
+application-local.properties
+application-staging.yml
+application-staging.yaml
+application-staging.properties
+application-secrets.yml
+application-secrets.yaml
+application-secrets.properties
+secrets.yml
+secrets.yaml
+secrets.properties
+
 ### STS ###
 .apt_generated
 .classpath
