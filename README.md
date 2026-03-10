@@ -63,8 +63,19 @@ O arquivo `.github/workflows/ci.yml` dispara automaticamente em push e pull requ
 | Secret | Valor |
 |---|---|
 | `SONAR_TOKEN` | Token gerado no SonarCloud |
-| `SONAR_ORGANIZATION` | `wellbenicio` |
-| `SONAR_PROJECT_KEY` | `wellbenicio_casa-de-oxala-api` |
+
+> **`sonar.organization` e `sonar.projectKey` já estão definidos em `sonar-project.properties`** — apenas o `SONAR_TOKEN` precisa ser configurado como secret.
+
+---
+
+## Checklist de configuração manual
+
+| Item | Status | Como fazer |
+|---|---|---|
+| Secret `SONAR_TOKEN` | ⚙️ Manual | Settings → Secrets → Actions → New repository secret |
+| SonarCloud: Analysis Method = CI | ⚙️ Manual | sonarcloud.io → Projeto → Administration → Analysis Method → desabilite Automatic |
+| Branch protection — `main` | ⚙️ Manual | Settings → Branches → Add rule: require PR, require status check `Build & Test`, dismiss stale reviews |
+| Branch protection — `develop` | ⚙️ Manual | Mesmas regras de `main` acima |
 
 ---
 

@@ -99,13 +99,9 @@ jobs:
         if: steps.check-sonar.outputs.skip == 'false'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
         run: |
           mvn sonar:sonar \
             --batch-mode \
             --no-transfer-progress \
-            -Dsonar.organization="${SONAR_ORGANIZATION}" \
-            -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token="${SONAR_TOKEN}"
