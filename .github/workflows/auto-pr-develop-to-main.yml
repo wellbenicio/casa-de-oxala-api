@@ -1,0 +1,43 @@
+name: Auto PR — develop → main
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-pr-to-main:
+    name: Open PR to main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create PR from develop to main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING_PR=$(gh pr list \
+            --base main \
+            --head develop \
+            --state open \
+            --json number \
+            --jq '.[0].number' 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR from develop to main already exists — skipping."
+          else
+            gh pr create \
+              --base main \
+              --head develop \
+              --title "chore: promote develop → main" \
+              --body "Este PR foi criado automaticamente após um merge em \`develop\`. Revise e faça o merge para promover para produção."
+            echo "PR from develop to main created successfully."
+          fi
