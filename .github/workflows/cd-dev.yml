@@ -1,7 +1,7 @@
 name: CD — Dev
 
 # Deploy to the Azure Container Apps DEV environment
-# when a push to 'develop' succeeds CI.
+# when CI succeeds on 'develop'.
 on:
   workflow_run:
     workflows: ["CI"]
@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write   # Required for OIDC login to Azure
 
 jobs:
   deploy-dev:
@@ -17,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
-    # GitHub Environment for audit trail and optional manual approval
+    # GitHub Environment for audit trail.
+    # Add required reviewers here if you ever want a manual gate on dev.
     environment: dev
 
     steps:
@@ -26,15 +28,18 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      - name: Log in to Azure (OIDC — no long-lived credentials)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Log in to ACR (via Azure CLI token — no admin password)
+        run: az acr login --name "${{ vars.ACR_NAME }}"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Azure Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ secrets.ACR_LOGIN_SERVER }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push image
         uses: docker/build-push-action@v6
@@ -42,21 +47,14 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.ACR_LOGIN_SERVER }}/casa-de-oxala-api:dev-${{ github.event.workflow_run.head_sha }}
-            ${{ secrets.ACR_LOGIN_SERVER }}/casa-de-oxala-api:dev-latest
-          cache-from: type=registry,ref=${{ secrets.ACR_LOGIN_SERVER }}/casa-de-oxala-api:dev-latest
+            ${{ vars.ACR_NAME }}.azurecr.io/casa-de-oxala-api:dev-${{ github.event.workflow_run.head_sha }}
+            ${{ vars.ACR_NAME }}.azurecr.io/casa-de-oxala-api:dev-latest
+          cache-from: type=registry,ref=${{ vars.ACR_NAME }}.azurecr.io/casa-de-oxala-api:dev-latest
           cache-to: type=inline
 
-      - name: Log in to Azure
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
-
       - name: Deploy to Azure Container Apps (dev)
-        uses: azure/container-apps-deploy-action@v2
-        with:
-          appSourcePath: ${{ github.workspace }}
-          acrName: ${{ vars.ACR_NAME }}
-          containerAppName: ${{ vars.ACA_APP_NAME_DEV }}
-          resourceGroup: ${{ vars.AZURE_RESOURCE_GROUP_DEV }}
-          imageToDeploy: ${{ secrets.ACR_LOGIN_SERVER }}/casa-de-oxala-api:dev-${{ github.event.workflow_run.head_sha }}
+        run: |
+          az containerapp update \
+            --name "${{ vars.ACA_APP_NAME_DEV }}" \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --image "${{ vars.ACR_NAME }}.azurecr.io/casa-de-oxala-api:dev-${{ github.event.workflow_run.head_sha }}"
