@@ -11,3 +11,10 @@ spring:
     show-sql: false
   flyway:
     enabled: false
+
+app:
+  jwt:
+    secret: test-secret-key-for-unit-tests-only-not-real
+    expiration-ms: 3600000
+  cors:
+    allowed-origins: http://localhost:3000
