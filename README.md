@@ -48,11 +48,11 @@ O arquivo `.github/workflows/ci.yml` dispara automaticamente em push e pull requ
 | Job | O que faz |
 |---|---|
 | **Build & Test** | Compila com Maven, roda testes, gera relatório JaCoCo |
-| **Quality Gate** | Análise SonarCloud (opcional — pula se `SONAR_TOKEN` não estiver configurado) |
+| **Quality Gate** | Análise SonarCloud — bloqueia o merge se o token não estiver configurado ou se a análise falhar |
 
-> **O job de Build & Test é o check obrigatório.** O Quality Gate é opcional e não bloqueia o merge caso os secrets do SonarCloud ainda não estejam configurados.
+> **Ambos os jobs são obrigatórios.** Configure o `SONAR_TOKEN` antes de abrir PRs.
 
-### Configurar SonarCloud (opcional)
+### Configurar SonarCloud
 
 1. Acesse [sonarcloud.io](https://sonarcloud.io) e faça login com o GitHub
 2. Importe o repositório `casa-de-oxala-api` na organização `wellbenicio`
@@ -63,8 +63,8 @@ O arquivo `.github/workflows/ci.yml` dispara automaticamente em push e pull requ
 | Secret | Valor |
 |---|---|
 | `SONAR_TOKEN` | Token gerado no SonarCloud |
-| `SONAR_ORGANIZATION` | `wellbenicio` |
-| `SONAR_PROJECT_KEY` | `wellbenicio_casa-de-oxala-api` |
+
+> **`sonar.organization` e `sonar.projectKey` já estão definidos em `pom.xml`** — apenas o `SONAR_TOKEN` precisa ser configurado como secret.
 
 ---
 
