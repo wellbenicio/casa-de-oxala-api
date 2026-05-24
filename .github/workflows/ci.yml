@@ -29,7 +29,7 @@ jobs:
       - name: Set up Java 21 (Temurin)
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
 
@@ -81,7 +81,7 @@ jobs:
         if: steps.check-sonar.outputs.skip == 'false'
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
 
