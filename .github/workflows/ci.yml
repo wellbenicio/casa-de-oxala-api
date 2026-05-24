@@ -26,7 +26,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Java 21 (Temurin)
+      - name: Set up Java 25 (Temurin)
         uses: actions/setup-java@v4
         with:
           java-version: '25'
@@ -77,7 +77,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Java 21 (Temurin)
+      - name: Set up Java 25 (Temurin)
         if: steps.check-sonar.outputs.skip == 'false'
         uses: actions/setup-java@v4
         with:
