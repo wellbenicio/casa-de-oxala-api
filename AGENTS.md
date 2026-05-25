@@ -56,7 +56,7 @@ Não é apenas uma vitrine online. O produto precisa apoiar a operação real da
 ### Backend
 
 - Java 25
-- Spring Boot 3
+- Spring Boot 4
 - Spring Security
 - Jakarta Validation
 - API REST JSON
@@ -901,7 +901,7 @@ Regras:
 - Não tome decisão arquitetural sem perguntar.
 - Não adicione dependências ou serviços externos sem justificar e pedir validação.
 - Respeite a arquitetura monólito modular.
-- Respeite Java 25, Spring Boot 3, Next.js, PostgreSQL e Azure.
+- Respeite Java 25, Spring Boot 4, Next.js, PostgreSQL e Azure.
 - Adicione/ajuste testes quando aplicável.
 - Ao final, informe arquivos alterados, validações executadas e sugestão de commit em português.
 ```
@@ -935,7 +935,7 @@ O agente deve bloquear e pedir validação antes de continuar se a tarefa exigir
 
 ```txt
 Arquitetura: monólito modular
-Backend: Java 25 + Spring Boot 3
+Backend: Java 25 + Spring Boot 4
 Frontend: Next.js + TypeScript
 Banco: PostgreSQL
 Cloud: Azure
