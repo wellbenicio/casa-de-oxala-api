@@ -5,7 +5,7 @@
 
 API REST para a Casa de Oxalá — loja de artigos religiosos (umbanda, candomblé, jurema e afins).
 
-**Stack:** Java 21 · Spring Boot 4 · PostgreSQL · Maven · Azure Container Apps
+**Stack:** Java 25 · Spring Boot 4 · PostgreSQL · Maven · Azure Container Apps
 
 ---
 
@@ -13,7 +13,7 @@ API REST para a Casa de Oxalá — loja de artigos religiosos (umbanda, candombl
 
 ### Pré-requisitos
 
-- Java 21+
+- Java 25+
 - Maven Wrapper (`./mvnw`) — já incluso no repositório
 - Docker e Docker Compose (para o banco PostgreSQL)
 
